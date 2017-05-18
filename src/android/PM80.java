@@ -5,8 +5,6 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import device.common.MsrIndex;
 import device.common.MsrResult;
@@ -197,11 +195,7 @@ public class PM80 extends CordovaPlugin {
             if (readstatus == 0) {
                 GetResult();
                 String message;
-                JSONObject json = new JSONObject();
-                json.put("Track1",mTrack1);
-                json.put("Track2",mTrack2);
-                json.put("Track3",mTrack3);
-                message = json.toString();
+                message = "{\"Track1\":\"" + mTrack1 + "\",\"Track2\":\"" + mTrack2 + "\",\"Track3\":\"" + mTrack3 + "\"}";
                 fireEvent("swipe_success", message);
             } else {
                 fireEvent("swipe_failed",errormsg(status, readstatus));
