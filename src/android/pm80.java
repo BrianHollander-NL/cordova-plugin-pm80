@@ -1,18 +1,19 @@
 package nl.timeseries.plugin.pm80;
+
+import org.apache.cordova.*;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
-
-import org.apache.cordova.*;
 import org.json.JSONArray;
 import org.json.JSONException;
+
 import device.common.MsrIndex;
 import device.common.MsrResult;
 import device.common.MsrResultCallback;
 import device.sdk.MsrManager;
 
-public class PM80 extends CordovaPlugin{
+public class PM80 extends CordovaPlugin {
     private static final String TAG="MSR";
 
     private Context context;

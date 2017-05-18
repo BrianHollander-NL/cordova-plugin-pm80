@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
         id="nl.timeseries.plugin.pm80"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         version="0.1.0">
 
   <name>PM80</name>
@@ -15,7 +16,7 @@
 
   <!-- js -->
   <js-module src="www/pm80.js" name="pm80">
-    <clobbers target="pm80" />
+    <clobbers target="cordova.plugins.PM80" />
   </js-module>
 
   <platform name="android">
@@ -26,7 +27,7 @@
       </feature>
     </config-file>
     <source-file src="src/android/device.sdk.jar" target-dir="libs" framework="true" />
-    <source-file src="src/android/pm80_msr.java" target-dir="src/nl/timeseries/plugin/pm80/"/>
+    <source-file src="src/android/pm80.java" target-dir="src/nl/timeseries/plugin/pm80/"/>
   </platform>
 
 </plugin>
