@@ -197,8 +197,8 @@ public class PM80 extends CordovaPlugin {
     }
 
     /***************************************************
-    * SDK CALLBACKS
-    ***************************************************/
+     * SDK CALLBACKS
+     ***************************************************/
     MsrResultCallback mCallback = new MsrResultCallback() {
         @Override
         public void onResult(int cmd, int status) {
@@ -287,11 +287,7 @@ public class PM80 extends CordovaPlugin {
             ksn[i] = data[5 + i];
         }
         long tc = ((ksn[7] & 0x1f) << 16) | (ksn[8] & 0xff) <<8 | ksn[9] & 0xff;
-        return
-import java.security.Key;
-
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;.getKey(initialKey, ksn, tc);
+        return Dukpt.getKey(initialKey, ksn, tc);
     }
 
     private byte[] getDataFromEncryptionData() {
@@ -356,9 +352,9 @@ import javax.crypto.spec.SecretKeySpec;.getKey(initialKey, ksn, tc);
         // callbackContext will only be null when caller called from
         // lifecycle methods (i.e., never from containing app).
         if (callbackContext != null) {
-        if (msg == null) {
-            callbackContext.success();
-        } else callbackContext.error(msg);
+            if (msg == null) {
+                callbackContext.success();
+            } else callbackContext.error(msg);
         }
     }
 
@@ -382,12 +378,12 @@ import javax.crypto.spec.SecretKeySpec;.getKey(initialKey, ksn, tc);
      */
     private void fireEvent(String event, String data) {
         if(data != null) {
-        data = data.replaceAll("\\s","");
+            data = data.replaceAll("\\s","");
         }
         String dataArg = data != null ? "','" + data + "" : "";
 
         String js = "cordova.plugins.pm80.fireEvent('" +
-        event + dataArg + "');";
+                event + dataArg + "');";
 
         webView.sendJavascript(js);
     }
