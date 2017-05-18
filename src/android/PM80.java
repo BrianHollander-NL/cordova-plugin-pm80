@@ -142,7 +142,7 @@ public class PM80 extends CordovaPlugin {
 
     private void deactivateReader(final CallbackContext callbackContext){
         try{
-            mMsr.Device.MsrClose(mCallback);
+            mMsr.DeviceMsrClose();
             if(callbackContext != null){
                 readerActivated = false;
             }
