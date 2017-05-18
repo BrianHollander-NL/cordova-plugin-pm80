@@ -199,9 +199,9 @@ public class PM80 extends CordovaPlugin{
                 GetResult();
                 String message;
                 JSONObject json = new JSONObject();
-                json.put("track1",mTrack1);
-                json.put("track2",mTrack2);
-                json.put("track3",mTrack3);
+                json.put("Track1",mTrack1);
+                json.put("Track2",mTrack2);
+                json.put("Track3",mTrack3);
                 message = json.toString();
                 fireEvent("swipe_success", message);
             } else {
@@ -347,7 +347,7 @@ public class PM80 extends CordovaPlugin{
         // lifecycle methods (i.e., never from containing app).
         if (callbackContext != null) {
         if (msg == null) {
-        callbackContext.success();
+            callbackContext.success();
         } else callbackContext.error(msg);
         }
     }
