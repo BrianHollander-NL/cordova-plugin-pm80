@@ -218,8 +218,8 @@ public class PM80 extends CordovaPlugin {
                 if(!track2Success) mTrack2 = "";
                 if(!track3Success) mTrack3 = "";
                 message = "{\"Track1\":{\"Success\":" + track1Success + ",\"Content\":\"" + mTrack1 + "\"},"
-                        + "\"Track3\":{\"Success\":" + track2Success + ",\"Content\":\"" + mTrack2 + "\"},"
-                        + "\"Track2\":{\"Success\":" + track3Success + ",\"Content\":\"" + mTrack3 + "\"}}";
+                        + "\"Track2\":{\"Success\":" + track2Success + ",\"Content\":\"" + mTrack2 + "\"},"
+                        + "\"Track3\":{\"Success\":" + track3Success + ",\"Content\":\"" + mTrack3 + "\"}}";
                 fireEvent("swipe_success", message);
             } else {
                 fireEvent("swipe_failed",errormsg(status, readstatus));
