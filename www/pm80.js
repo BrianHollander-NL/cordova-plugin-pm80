@@ -27,7 +27,7 @@ PM80.on = function (event, callback, scope) {
 	window.addEventListener(event, callback.bind(scope || window));
 };
 
-module.exports = PM80_MSR;
+module.exports = PM80;
 
 /*
  * Polyfill for adding CustomEvent -- Copy uncommented lines below into your

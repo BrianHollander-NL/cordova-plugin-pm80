@@ -5,11 +5,14 @@
 
   <name>PM80</name>
 
+  <!-- cordova -->
   <engines>
-    <engine name="cordova" version=">=3.4.0"/>
+    <engine name="cordova" version=">=3.5.0"/>
   </engines>
 
-  <asset src="www/pm80.js" target="js/pm80.js"/>
+  <!-- dependencies -->
+  <dependency id="cordova-plugin-device" />
+
   <!-- js -->
   <js-module src="www/pm80.js" name="pm80">
     <clobbers target="pm80" />
