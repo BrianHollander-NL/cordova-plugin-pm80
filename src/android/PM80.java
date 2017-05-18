@@ -382,7 +382,7 @@ public class PM80 extends CordovaPlugin {
         }
         String dataArg = data != null ? "','" + data + "" : "";
 
-        String js = "cordova.plugins.pm80.fireEvent('" +
+        String js = "cordova.plugins.PM80.fireEvent('" +
                 event + dataArg + "');";
 
         webView.sendJavascript(js);
