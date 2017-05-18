@@ -5,6 +5,7 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.json.*;
 
 import java.lang.*;
@@ -171,7 +172,7 @@ public class PM80 extends CordovaPlugin {
      */
     private void swipe(final CallbackContext callbackContext) {
         if(mMsr != null) {
-            if (mMsr.DeviceMsrStartRead() > 0) {
+            if (mMsr.DeviceMsrStartRead() == 0) {
                 // If we get this far, we can expect events for card
                 // processing and card data received if a card is
                 // actually swiped, otherwise we can expect a timeout
@@ -202,11 +203,23 @@ public class PM80 extends CordovaPlugin {
     MsrResultCallback mCallback = new MsrResultCallback() {
         @Override
         public void onResult(int cmd, int status) {
+            int track1result = (status >> 8) & 0x1;
+            int track2result = (status >> 8) & 0x2;
+            int track3result = (status >> 8) & 0x4;
+            boolean track1Success = track1result == 0;
+            boolean track2Success = track2result == 0;
+            boolean track3Success = track3result == 0;
+
             int readstatus = status & 0xff;
             if (readstatus == 0) {
                 GetResult();
                 String message;
-                message = "{\"Track1\":\"" + mTrack1 + "\",\"Track2\":\"" + mTrack2 + "\",\"Track3\":\"" + mTrack3 + "\"}";
+                if(!track1Success) mTrack1 = "";
+                if(!track2Success) mTrack2 = "";
+                if(!track3Success) mTrack3 = "";
+                message = "{\"Track1\":{\"Success\":" + track1Success + ",\"Content\":\"" + mTrack1 + "\"},"
+                        + "\"Track3\":{\"Success\":" + track2Success + ",\"Content\":\"" + mTrack2 + "\"},"
+                        + "\"Track2\":{\"Success\":" + track3Success + ",\"Content\":\"" + mTrack3 + "\"}}";
                 fireEvent("swipe_success", message);
             } else {
                 fireEvent("swipe_failed",errormsg(status, readstatus));
