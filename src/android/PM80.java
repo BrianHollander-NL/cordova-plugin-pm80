@@ -16,7 +16,6 @@ import device.sdk.MsrManager;
 public class PM80 extends CordovaPlugin {
     private static final String TAG="MSR";
 
-    private Context context;
     /* read state */
     public static final int READ_SUCCESS=0;
     public static final int READ_FAIL=1;
@@ -45,7 +44,6 @@ public class PM80 extends CordovaPlugin {
     public void initialize(CordovaInterface cordova,CordovaWebView webView){
         super.initialize(cordova,webView);
         mDetectResult = new MsrResult();
-        context = this.cordova.getActivity().getApplicationContext();
     }
 
     /**
