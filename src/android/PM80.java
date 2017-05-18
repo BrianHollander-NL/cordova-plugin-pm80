@@ -7,6 +7,16 @@ import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
 import org.json.*;
 
+import java.lang.*;
+
+import java.security.Key;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+
+import android.content.Context;
+import android.util.Log;
+
 import device.common.MsrIndex;
 import device.common.MsrResult;
 import device.common.MsrResultCallback;
@@ -266,7 +276,9 @@ public class PM80 extends CordovaPlugin {
         byte[] initialKey = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10};
         return mMsr.setUsedEncryption(keySerialNumber, initialKey);
     }
-
+    public byte[] getEncryptionData() {
+        return mMsr.getEncryptionData();
+    }
     private byte[] getDukptKey() {
         byte[] data = getEncryptionData();
         byte[] initialKey = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10};
@@ -275,7 +287,11 @@ public class PM80 extends CordovaPlugin {
             ksn[i] = data[5 + i];
         }
         long tc = ((ksn[7] & 0x1f) << 16) | (ksn[8] & 0xff) <<8 | ksn[9] & 0xff;
-        return Dukpt.getKey(initialKey, ksn, tc);
+        return
+import java.security.Key;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;.getKey(initialKey, ksn, tc);
     }
 
     private byte[] getDataFromEncryptionData() {
