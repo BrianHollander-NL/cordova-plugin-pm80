@@ -10,20 +10,20 @@
   </engines>
 
   <asset src="www/pm80.js" target="js/pm80.js"/>
-
+  <!-- js -->
   <js-module src="www/pm80.js" name="pm80">
     <clobbers target="pm80" />
   </js-module>
 
   <platform name="android">
-
+    <!-- android -->
     <config-file target="res/xml/config.xml" parent="/*">
       <feature name="PM80">
-        <param name="android-package" value="com.timeseries.plugin.pm80"/>
+        <param name="android-package" value="nl.timeseries.plugin.pm80.PM80"/>
       </feature>
     </config-file>
-
-    <source-file src="src/android/pm80_msr.java" target-dir="src/com/timeseries/plugin/pm80/"/>
+    <source-file src="src/android/device.sdk.jar" target-dir="libs" framework="true" />
+    <source-file src="src/android/pm80_msr.java" target-dir="src/nl/timeseries/plugin/pm80/"/>
   </platform>
 
 </plugin>
