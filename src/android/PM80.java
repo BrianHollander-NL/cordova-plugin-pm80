@@ -40,6 +40,7 @@ public class PM80 extends CordovaPlugin {
     private String mResult = null;
 
     private boolean readerActivated = false;
+    private boolean scannerActivated = true;
 
     /***************************************************
      * LIFECYCLE
@@ -152,6 +153,7 @@ public class PM80 extends CordovaPlugin {
     private void deactivateReader(final CallbackContext callbackContext){
         try{
             mMsr.DeviceMsrClose();
+            mMsr = null;
             if(callbackContext != null){
                 readerActivated = false;
             }
