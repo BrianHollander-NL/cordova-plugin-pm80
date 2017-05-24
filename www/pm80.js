@@ -26,7 +26,9 @@ PM80.fireEvent = function (event, data) {
 PM80.on = function (event, callback, scope) {
 	window.addEventListener(event, callback.bind(scope || window));
 };
-
+PM80.off = function (event, callback, scope) {
+	window.removeEventListener(event, callback.bind(scope || window));
+};
 module.exports = PM80;
 
 /*
