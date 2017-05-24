@@ -142,6 +142,8 @@ public class PM80 extends CordovaPlugin {
 
             if(callbackContext != null){
                 readerActivated = true;
+            } else {
+                fireEvent("reader_reactivated");
             }
         } catch(IllegalArgumentException e){
             e.printStackTrace();
