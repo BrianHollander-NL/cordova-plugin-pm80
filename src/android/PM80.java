@@ -232,7 +232,6 @@ public class PM80 extends CordovaPlugin {
                 mScan.aDecodeAPIInit();
                 origScanResultType = mScan.aDecodeGetResultType();
                 mScan.aDecodeSetResultType(ScanConst.ResultType.DCD_RESULT_USERMSG);
-                mScan.aRegisterDecodeStateCallback(mDecodeCallback);
             }
 
             if(callbackContext != null){
@@ -249,7 +248,6 @@ public class PM80 extends CordovaPlugin {
     private void deactivateScanner(final CallbackContext callbackContext){
         try{
             mScan.aDecodeSetResultType(origScanResultType);
-            mScan.aUnregisterDecodeStateCallback(mDecodeCallback);
             mScan.aDecodeAPIDeinit();
             mScan = null;
             if(callbackContext != null){
