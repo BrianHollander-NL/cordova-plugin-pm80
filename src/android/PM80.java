@@ -231,7 +231,7 @@ public class PM80 extends CordovaPlugin {
             if(mScan != null){
                 mScan.aDecodeAPIInit();
                 origScanResultType = mScan.aDecodeGetResultType();
-                mScan.aDecodeSetResultType(ScanConst.ResultType.DCD_RESULT_USERMSG);
+                mScan.aDecodeSetResultType(ScanConst.ResultType.DCD_RESULT_KBDMSG);
                 mScan.aRegisterDecodeStateCallback(mDecodeCallback);
             }
 
@@ -296,6 +296,7 @@ public class PM80 extends CordovaPlugin {
     public class ScanResultReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+            fireEvent("scan_result", "ReceiveScan");
             if (mScan != null) {
                 mScan.aDecodeGetResult(mDecodeResult.recycle());
                 String message;
