@@ -39,7 +39,7 @@ public class PM80 extends CordovaPlugin {
     private static ScanManager mScan = null;
     private DecodeResult mDecodeResult = null;
     
-    private int origScanResultType = null;
+    private int origScanResultType = 0;
 
     private String mTrack1;
     private String mTrack2;
