@@ -306,7 +306,6 @@ public class PM80 extends CordovaPlugin {
     public class ScanResultReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            webView.sendJavascript("window.alert(1)");
             fireEvent("scan_result", "ReceiveScan");
             if (mScan != null) {
                 mScan.aDecodeGetResult(mDecodeResult.recycle());
