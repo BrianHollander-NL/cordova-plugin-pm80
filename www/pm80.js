@@ -18,6 +18,14 @@ PM80.stopSwipe = function (success, error) {
 	exec(success, error, 'PM80', 'MSR_stopSwipe', []);
 };
 
+PM80.startScanner = function (success, error) {
+	exec(success, error, 'PM80', 'SCAN_activateScanner', []);
+};
+
+PM80.stopScanner = function (success, error) {
+	exec(success, error, 'PM80', 'SCAN_deactivateScanner', []);
+};
+
 PM80.fireEvent = function (event, data) {
 	var customEvent = new CustomEvent(event, { 'detail': data} );
 	window.dispatchEvent(customEvent);
