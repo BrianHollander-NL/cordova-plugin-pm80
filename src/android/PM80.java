@@ -21,6 +21,10 @@ import device.common.MsrIndex;
 import device.common.MsrResult;
 import device.common.MsrResultCallback;
 import device.sdk.MsrManager;
+import device.sdk.ScanManager;
+import device.common.DecodeResult;
+import device.common.ScanConst;
+import device.common.DecodeStateCallback;
 
 public class PM80 extends CordovaPlugin {
     private static final String TAG="MSR";
@@ -35,7 +39,7 @@ public class PM80 extends CordovaPlugin {
     private static ScanManager mScan = null;
     private DecodeResult mDecodeResult = null;
     
-    private ScanConst.ResultType origScanResultType = null;
+    private int origScanResultType = null;
 
     private String mTrack1;
     private String mTrack2;
@@ -117,6 +121,10 @@ public class PM80 extends CordovaPlugin {
             swipe(callbackContext);
         } else if("MSR_stopSwipe".equals(action)){
             stopSwipe(callbackContext);
+        } else if("SCAN_activateScanner".equals(action)){
+            activateScanner(callbackContext);
+        } else if("SCAN_deactivateScanner".equals(action)){
+            deactivateScanner(callbackContext);
         } else {
             // Method not found.
             return false;
@@ -215,8 +223,9 @@ public class PM80 extends CordovaPlugin {
         try{
             mScan = new ScanManager();
             if(mScan != null){
-                origScanResultType = mScan.aDecode.SetResultType();
+                origScanResultType = mScan.aDecodeGetResultType();
                 mScan.aDecodeSetResultType(ScanConst.ResultType.DCD_RESULT_KBDMSG);
+                mScan.aRegisterDecodeStateCallback(mDecodeCallback);
             }
 
             if(callbackContext != null){
@@ -233,6 +242,7 @@ public class PM80 extends CordovaPlugin {
     private void deactivateScanner(final CallbackContext callbackContext){
         try{
             mScan.aDecodeSetResultType(origScanResultType);
+            mScan.aUnregisterDecodeStateCallback(mDecodeCallback);
             mScan = null;
             if(callbackContext != null){
                 scannerActivated = false;
@@ -275,9 +285,10 @@ public class PM80 extends CordovaPlugin {
             mTrack3 = new String();
         }
     };
-    DecodeStateCallBack mDecodeCallback = new DecodeStateCallBack() {
+    DecodeStateCallback mDecodeCallback = new DecodeStateCallback() {
         @Override
         public void	onChangedState(int state) {
+            fireEvent("scanState", state);
         }
     }
 
