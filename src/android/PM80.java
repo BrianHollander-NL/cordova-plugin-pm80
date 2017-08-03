@@ -290,7 +290,7 @@ public class PM80 extends CordovaPlugin {
         public void	onChangedState(int state) {
             fireEvent("scanState", String.valueOf(state));
         }
-    }
+    };
 
     /***************************************************
      * UTILS
