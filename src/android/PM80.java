@@ -30,8 +30,12 @@ public class PM80 extends CordovaPlugin {
     public static final int READ_FAIL=1;
     public static final int READ_READY=2;
 
-    private static MsrManager mMsr=null;
-    private MsrResult mDetectResult=null;
+    private static MsrManager mMsr = null;
+    private MsrResult mDetectResult = null;
+    private static ScanManager mScan = null;
+    private DecodeResult mDecodeResult = null;
+    
+    private ScanConst.ResultType origScanResultType = null;
 
     private String mTrack1;
     private String mTrack2;
@@ -45,7 +49,6 @@ public class PM80 extends CordovaPlugin {
     /***************************************************
      * LIFECYCLE
      ***************************************************/
-
 
     /**
      * Called after plugin construction and fields have been initialized.
@@ -122,8 +125,7 @@ public class PM80 extends CordovaPlugin {
     }
 
     /**
-     * Initializes registers the Headset Receiver for headset detection, and starts
-     * listen to SDK events for connection, disconnection, swiping, etc.
+     * Starts listen to SDK events for connection, disconnection, swiping, etc.
      *
      * @param callbackContext
      *        Used when calling back into JavaScript
@@ -200,6 +202,47 @@ public class PM80 extends CordovaPlugin {
         } else callbackContext.error("Reader must be activated before stopping swipe.");
     }
 
+    /**
+     * Initializes registers the Headset Receiver for headset detection, and starts
+     * listen to SDK events for connection, disconnection, swiping, etc.
+     *
+     * @param callbackContext
+     *        Used when calling back into JavaScript
+     */
+    private void activateScanner(final CallbackContext callbackContext){
+        String callbackContextMsg = null;
+
+        try{
+            mScan = new ScanManager();
+            if(mScan != null){
+                origScanResultType = mScan.aDecode.SetResultType();
+                mScan.aDecodeSetResultType(ScanConst.ResultType.DCD_RESULT_KBDMSG);
+            }
+
+            if(callbackContext != null){
+                scannerActivated = true;
+            } else {
+                fireEvent("scanner_reactivated");
+            }
+        } catch(IllegalArgumentException e){
+            e.printStackTrace();
+            callbackContextMsg = "Failed to activate scanner";
+        }
+        sendCallback(callbackContext,callbackContextMsg);
+    }
+    private void deactivateScanner(final CallbackContext callbackContext){
+        try{
+            mScan.aDecodeSetResultType(origScanResultType);
+            mScan = null;
+            if(callbackContext != null){
+                scannerActivated = false;
+            }
+        } catch(IllegalArgumentException e){
+            e.printStackTrace();
+        }
+
+        sendCallback(callbackContext,null);
+    }
     /***************************************************
      * SDK CALLBACKS
      ***************************************************/
@@ -232,6 +275,11 @@ public class PM80 extends CordovaPlugin {
             mTrack3 = new String();
         }
     };
+    DecodeStateCallBack mDecodeCallback = new DecodeStateCallBack() {
+        @Override
+        public void	onChangedState(int state) {
+        }
+    }
 
     /***************************************************
      * UTILS
