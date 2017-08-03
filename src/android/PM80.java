@@ -231,7 +231,7 @@ public class PM80 extends CordovaPlugin {
             if(mScan != null){
                 mScan.aDecodeAPIInit();
                 origScanResultType = mScan.aDecodeGetResultType();
-                mScan.aDecodeSetResultType(ScanConst.ResultType.DCD_RESULT_KBDMSG);
+                mScan.aDecodeSetResultType(ScanConst.ResultType.DCD_RESULT_USERMSG);
                 mScan.aRegisterDecodeStateCallback(mDecodeCallback);
             }
 
@@ -293,9 +293,9 @@ public class PM80 extends CordovaPlugin {
             mTrack3 = new String();
         }
     };
-    public class ScanResultReceiver extends BroadcastReceiver {
+    private class ScanResultReceiver extends BroadcastReceiver {
         @Override
-        public void onReceive(Context context, Intent intent) {
+        private void onReceive(Context context, Intent intent) {
             fireEvent("scan_result", "ReceiveScan");
             if (mScan != null) {
                 mScan.aDecodeGetResult(mDecodeResult.recycle());
@@ -460,7 +460,7 @@ public class PM80 extends CordovaPlugin {
      * @param event
      *        The event name
      */
-    public void fireEvent(String event) {
+    private void fireEvent(String event) {
         fireEvent(event, null);
     }
 
@@ -472,7 +472,7 @@ public class PM80 extends CordovaPlugin {
      * @param data
      *        Details about the event
      */
-    public void fireEvent(String event, String data) {
+    private void fireEvent(String event, String data) {
         if(data != null) {
             data = data.replaceAll("\\s","");
         }
