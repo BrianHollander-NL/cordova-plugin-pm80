@@ -16,6 +16,9 @@ import javax.crypto.spec.SecretKeySpec;
 import android.Dukpt;
 import android.content.Context;
 import android.util.Log;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 
 import device.common.MsrIndex;
 import device.common.MsrResult;
@@ -37,7 +40,7 @@ public class PM80 extends CordovaPlugin {
     private static MsrManager mMsr = null;
     private MsrResult mDetectResult = null;
     private static ScanManager mScan = null;
-    private DecodeResult mDecodeResult = null;
+    private static DecodeResult mDecodeResult = null;
     
     private int origScanResultType = 0;
 
@@ -77,6 +80,9 @@ public class PM80 extends CordovaPlugin {
         if (readerActivated) {
             deactivateReader(null);
         }
+        if (scannerActivated) {
+            deactivateScanner(null);
+        }
     }
 
     /**
@@ -92,6 +98,9 @@ public class PM80 extends CordovaPlugin {
 
         if (readerActivated) {
             activateReader(null);
+        }
+        if (scannerActivated) {
+            activateScanner(null);
         }
     }
 
@@ -211,9 +220,6 @@ public class PM80 extends CordovaPlugin {
     }
 
     /**
-     * Initializes registers the Headset Receiver for headset detection, and starts
-     * listen to SDK events for connection, disconnection, swiping, etc.
-     *
      * @param callbackContext
      *        Used when calling back into JavaScript
      */
@@ -223,8 +229,9 @@ public class PM80 extends CordovaPlugin {
         try{
             mScan = new ScanManager();
             if(mScan != null){
+                mScan.aDecodeAPIInit();
                 origScanResultType = mScan.aDecodeGetResultType();
-                mScan.aDecodeSetResultType(ScanConst.ResultType.DCD_RESULT_KBDMSG);
+                mScan.aDecodeSetResultType(ScanConst.ResultType.DCD_RESULT_USERMSG);
                 mScan.aRegisterDecodeStateCallback(mDecodeCallback);
             }
 
@@ -243,6 +250,7 @@ public class PM80 extends CordovaPlugin {
         try{
             mScan.aDecodeSetResultType(origScanResultType);
             mScan.aUnregisterDecodeStateCallback(mDecodeCallback);
+            mScan.aDecodeAPIDeinit();
             mScan = null;
             if(callbackContext != null){
                 scannerActivated = false;
@@ -285,12 +293,18 @@ public class PM80 extends CordovaPlugin {
             mTrack3 = new String();
         }
     };
-    DecodeStateCallback mDecodeCallback = new DecodeStateCallback() {
+    private class ScanResultReceiver extends BroadcastReceiver {
         @Override
-        public void	onChangedState(int state) {
-            fireEvent("scanState", String.valueOf(state));
+        private void onReceive(Context context, Intent intent) {
+            if (mScan != null) {
+                mScan.aDecodeGetResult(mDecodeResult.recycle());
+                String message;
+                message = "{\"Type\":\"" + mDecodeResult.symName + "\","
+                        + "\"Data\":" + mDecodeResult.toString() + "}";
+                fireEvent("scan_result", message);
+            }
         }
-    };
+    }
 
     /***************************************************
      * UTILS
