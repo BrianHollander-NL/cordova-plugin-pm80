@@ -307,13 +307,13 @@ public class PM80 extends CordovaPlugin {
         @Override
         public void onReceive(Context context, Intent intent) {
             fireEvent("scan_result", "ReceiveScan");
-            if (mScan != null) {
+            /*if (mScan != null) {
                 mScan.aDecodeGetResult(mDecodeResult.recycle());
                 String message;
                 message = "{\"Type\":\"" + mDecodeResult.symName + "\","
                         + "\"Data\":" + mDecodeResult.toString() + "}";
                 fireEvent("scan_result", message);
-            }
+            }*/
         }
     }
 
