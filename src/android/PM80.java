@@ -28,7 +28,6 @@ import device.sdk.MsrManager;
 import device.sdk.ScanManager;
 import device.common.DecodeResult;
 import device.common.ScanConst;
-import device.common.DecodeStateCallback;
 
 public class PM80 extends CordovaPlugin {
     private static final String TAG="MSR";
@@ -235,7 +234,7 @@ public class PM80 extends CordovaPlugin {
                 mScan.aDecodeAPIInit();
                 origScanResultType = mScan.aDecodeGetResultType();
                 mScan.aDecodeSetResultType(ScanConst.ResultType.DCD_RESULT_USERMSG);
-                IntentFilter intentFilter = new IntentFilter(ScanConst.INTENT_SCANKEY_EVENT);
+                IntentFilter intentFilter = new IntentFilter(ScanConst.INTENT_USERMSG);
                 try {
                     context.registerReceiver(scanResultReceiver, intentFilter);
                 } catch(IllegalArgumentException e){
@@ -318,12 +317,6 @@ public class PM80 extends CordovaPlugin {
             }
         }
     }
-    DecodeStateCallback mDecodeCallback = new DecodeStateCallback() {
-        @Override
-        public void	onChangedState(int state) {
-            fireEvent("scanState", String.valueOf(state));
-        }
-    };
 
     /***************************************************
      * UTILS
