@@ -288,7 +288,7 @@ public class PM80 extends CordovaPlugin {
     DecodeStateCallback mDecodeCallback = new DecodeStateCallback() {
         @Override
         public void	onChangedState(int state) {
-            fireEvent("scanState", state);
+            fireEvent("scanState", String.valueOf(state));
         }
     }
 
