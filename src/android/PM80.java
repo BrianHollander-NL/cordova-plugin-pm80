@@ -41,7 +41,7 @@ public class PM80 extends CordovaPlugin {
     private static MsrManager mMsr = null;
     private MsrResult mDetectResult = null;
     private static ScanManager mScan = null;
-    private static DecodeResult mDecodeResult = null;
+    private static DecodeResult mDecodeResult;
     private final ScanResultReceiver scanResultReceiver = new ScanResultReceiver();
     private int origScanResultType = 0;
 
@@ -230,6 +230,7 @@ public class PM80 extends CordovaPlugin {
         try{
 
             mScan = new ScanManager();
+            mDecodeResult = new DecodeResult();
             if(mScan != null){
                 mScan.aDecodeAPIInit();
                 origScanResultType = mScan.aDecodeGetResultType();
@@ -307,13 +308,13 @@ public class PM80 extends CordovaPlugin {
         @Override
         public void onReceive(Context context, Intent intent) {
             fireEvent("scan_result", "ReceiveScan");
-            /*if (mScan != null) {
+            if (mScan != null) {
                 mScan.aDecodeGetResult(mDecodeResult.recycle());
                 String message;
                 message = "{\"Type\":\"" + mDecodeResult.symName + "\","
                         + "\"Data\":" + mDecodeResult.toString() + "}";
                 fireEvent("scan_result", message);
-            }*/
+            }
         }
     }
 
