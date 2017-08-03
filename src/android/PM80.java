@@ -31,7 +31,8 @@ import device.common.DecodeStateCallback;
 
 public class PM80 extends CordovaPlugin {
     private static final String TAG="MSR";
-
+    // Reference to application context for construction and resource purposes
+    private Context context;
     /* read state */
     public static final int READ_SUCCESS=0;
     public static final int READ_FAIL=1;
@@ -41,7 +42,7 @@ public class PM80 extends CordovaPlugin {
     private MsrResult mDetectResult = null;
     private static ScanManager mScan = null;
     private static DecodeResult mDecodeResult = null;
-    
+    private final ScanResultReceiver scanResultReceiver = new ScanResultReceiver();
     private int origScanResultType = 0;
 
     private String mTrack1;
@@ -225,14 +226,23 @@ public class PM80 extends CordovaPlugin {
      */
     private void activateScanner(final CallbackContext callbackContext){
         String callbackContextMsg = null;
-
+        if (context == null) context = this.cordova.getActivity().getApplicationContext();
         try{
+
             mScan = new ScanManager();
             if(mScan != null){
                 mScan.aDecodeAPIInit();
                 origScanResultType = mScan.aDecodeGetResultType();
                 mScan.aDecodeSetResultType(ScanConst.ResultType.DCD_RESULT_USERMSG);
-                mScan.aRegisterDecodeStateCallback(mDecodeCallback);
+                IntentFilter intentFilter = new IntentFilter(ScanConst.INTENT_SCANKEY_EVENT);
+                try {
+                    context.registerReceiver(scanResultReceiver, intentFilter);
+                } catch(IllegalArgumentException e){
+                    e.printStackTrace();
+                    // If we're not going to be able to detect via hardware whether
+                    // the swipe is plugged in, we can't continue.
+                    callbackContextMsg = "Unable to register ScanReceiver.";
+                }
             }
 
             if(callbackContext != null){
@@ -248,8 +258,8 @@ public class PM80 extends CordovaPlugin {
     }
     private void deactivateScanner(final CallbackContext callbackContext){
         try{
+            context.unregisterReceiver(scanResultReceiver);
             mScan.aDecodeSetResultType(origScanResultType);
-            mScan.aUnregisterDecodeStateCallback(mDecodeCallback);
             mScan.aDecodeAPIDeinit();
             mScan = null;
             if(callbackContext != null){
@@ -296,6 +306,7 @@ public class PM80 extends CordovaPlugin {
     public class ScanResultReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+            webView.sendJavascript("window.alert(1)");
             fireEvent("scan_result", "ReceiveScan");
             if (mScan != null) {
                 mScan.aDecodeGetResult(mDecodeResult.recycle());
