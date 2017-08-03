@@ -293,7 +293,7 @@ public class PM80 extends CordovaPlugin {
             mTrack3 = new String();
         }
     };
-    public static class ScanResultReceiver extends BroadcastReceiver {
+    public class ScanResultReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             fireEvent("scan_result", "ReceiveScan");
@@ -472,7 +472,7 @@ public class PM80 extends CordovaPlugin {
      * @param data
      *        Details about the event
      */
-    public static void fireEvent(String event, String data) {
+    private void fireEvent(String event, String data) {
         if(data != null) {
             data = data.replaceAll("\\s","");
         }
