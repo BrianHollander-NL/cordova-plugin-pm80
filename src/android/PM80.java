@@ -232,6 +232,7 @@ public class PM80 extends CordovaPlugin {
                 mScan.aDecodeAPIInit();
                 origScanResultType = mScan.aDecodeGetResultType();
                 mScan.aDecodeSetResultType(ScanConst.ResultType.DCD_RESULT_USERMSG);
+                mScan.aRegisterDecodeStateCallback(mDecodeCallback);
             }
 
             if(callbackContext != null){
@@ -248,6 +249,7 @@ public class PM80 extends CordovaPlugin {
     private void deactivateScanner(final CallbackContext callbackContext){
         try{
             mScan.aDecodeSetResultType(origScanResultType);
+            mScan.aUnregisterDecodeStateCallback(mDecodeCallback);
             mScan.aDecodeAPIDeinit();
             mScan = null;
             if(callbackContext != null){
@@ -291,7 +293,7 @@ public class PM80 extends CordovaPlugin {
             mTrack3 = new String();
         }
     };
-    public static class ScanResultReceiver extends BroadcastReceiver {
+    public class ScanResultReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (mScan != null) {
@@ -303,6 +305,12 @@ public class PM80 extends CordovaPlugin {
             }
         }
     }
+    DecodeStateCallback mDecodeCallback = new DecodeStateCallback() {
+        @Override
+        public void	onChangedState(int state) {
+            fireEvent("scanState", String.valueOf(state));
+        }
+    };
 
     /***************************************************
      * UTILS
@@ -451,7 +459,7 @@ public class PM80 extends CordovaPlugin {
      * @param event
      *        The event name
      */
-    private static void fireEvent(String event) {
+    public void fireEvent(String event) {
         fireEvent(event, null);
     }
 
@@ -463,7 +471,7 @@ public class PM80 extends CordovaPlugin {
      * @param data
      *        Details about the event
      */
-    private static void fireEvent(String event, String data) {
+    public void fireEvent(String event, String data) {
         if(data != null) {
             data = data.replaceAll("\\s","");
         }
