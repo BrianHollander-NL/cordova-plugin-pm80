@@ -303,9 +303,9 @@ public class PM80 extends CordovaPlugin {
             mTrack3 = new String();
         }
     };
-    public class ScanResultReceiver extends BroadcastReceiver {
+    private class ScanResultReceiver extends BroadcastReceiver {
         @Override
-        public void onReceive(Context context, Intent intent) {
+        private void onReceive(Context context, Intent intent) {
             fireEvent("scan_result", "ReceiveScan");
             if (mScan != null) {
                 mScan.aDecodeGetResult(mDecodeResult.recycle());
