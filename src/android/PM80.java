@@ -310,7 +310,7 @@ public class PM80 extends CordovaPlugin {
             if (mScan != null) {
                 mScan.aDecodeGetResult(mDecodeResult.recycle());
                 String message;
-                if( mDecodeResult.symName.equals("READ_FAIL")) {
+                if( mDecodeResult.symName.equals("READ_FAIL") || mDecodeResult.symName.equals("")) {
                     message = "{\"Success\": false }";
                 }
                 else{
