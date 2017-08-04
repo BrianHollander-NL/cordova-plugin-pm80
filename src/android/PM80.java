@@ -316,7 +316,7 @@ public class PM80 extends CordovaPlugin {
                 else{
                     message = "{\"Success\": true,"
                             +"\"Type\":\"" + mDecodeResult.symName + "\","
-                            + "\"Data\":" + mDecodeResult.toString() + "}";
+                            + "\"Data\":\"" + mDecodeResult.toString() + "\"}";
                 }
                 fireEvent("scan_result", message);
             }
@@ -351,28 +351,65 @@ public class PM80 extends CordovaPlugin {
         }
         else {
             switch(status) {
-                case MsrIndex.MMD1000_READ_ERROR:				msg = "Read failed";		break;
-                case MsrIndex.MMD1000_CRC_ERROR:				msg = "CRC error in encryption related information stored in OTP";		break;
-                case MsrIndex.MMD1000_NOINFOSTORE:				msg = "No information stored in OTP related to encryption";		break;
-                case MsrIndex.MMD1000_AES_INIT_NOT_SET:			msg = "AES initial vector is not set yet";		break;
-                case MsrIndex.MMD1000_READ_PREAMBLE_ERROR:		msg = "Preamble error in card read data";		break;
-                case MsrIndex.MMD1000_READ_POSTAMBLE_ERROR:		msg = "Postamble error in card read data";		break;
-                case MsrIndex.MMD1000_READ_LRC_ERROR:			msg = "LRC error in card read data";		break;
-                case MsrIndex.MMD1000_READ_PARITY_ERROR:		msg = "Parity error in card read data";		break;
-                case MsrIndex.MMD1000_BLANK_TRACK:				msg = "Black track";		break;
-                case MsrIndex.MMD1000_CMD_STXETX_ERROR:			msg = "STX/ETX error in command communication";		break;
-                case MsrIndex.MMD1000_CMD_UNRECOGNIZABLE:		msg = "Class/Function un-recognizable in command";		break;
-                case MsrIndex.MMD1000_CMD_BCC_ERROR:			msg = "BCC error in command communication";		break;
-                case MsrIndex.MMD1000_CMD_LENGTH_ERROR:			msg = "Length error in command communication";		break;
-                case MsrIndex.MMD1000_READ_NO_DATA:				msg = "No data available to re-read";		break;
-                case MsrIndex.MMD1000_DEVICE_READ_TIMEOUT:		msg = "Read command timeout";		break;
-                case MsrIndex.MMD1000_DEVICE_POWER_DISABLE:		msg = "MMD1000 power is disable";		break;
-                case MsrIndex.MMD1000_DEVICE_NOT_OPENED:		msg = "MMD1000 function is not opened";		break;
-                case MsrIndex.MMD1000_DEVICE_DATA_CLEARED:		msg = "MMD1000 device result is cleared";		break;
-                default:		msg = "error"; 		break;
+                case MsrIndex.MMD1000_READ_ERROR:
+                    msg = "Read failed";
+                    break;
+                case MsrIndex.MMD1000_CRC_ERROR:
+                    msg = "CRC error in encryption related information stored in OTP";
+                    break;
+                case MsrIndex.MMD1000_NOINFOSTORE:
+                    msg = "No information stored in OTP related to encryption";
+                    break;
+                case MsrIndex.MMD1000_AES_INIT_NOT_SET:
+                    msg = "AES initial vector is not set yet";
+                    break;
+                case MsrIndex.MMD1000_READ_PREAMBLE_ERROR
+                    msg = "Preamble error in card read data";
+                    break;
+                case MsrIndex.MMD1000_READ_POSTAMBLE_ERROR:
+                    msg = "Postamble error in card read data";
+                    break;
+                case MsrIndex.MMD1000_READ_LRC_ERROR:
+                    msg = "LRC error in card read data";
+                    break;
+                case MsrIndex.MMD1000_READ_PARITY_ERROR:
+                    msg = "Parity error in card read data";
+                    break;
+                case MsrIndex.MMD1000_BLANK_TRACK:
+                    msg = "Black track";
+                    break;
+                case MsrIndex.MMD1000_CMD_STXETX_ERROR:
+                    msg = "STX/ETX error in command communication";
+                    break;
+                case MsrIndex.MMD1000_CMD_UNRECOGNIZABLE:
+                    msg = "Class/Function un-recognizable in command";
+                    break;
+                case MsrIndex.MMD1000_CMD_BCC_ERROR:
+                    msg = "BCC error in command communication";
+                    break;
+                case MsrIndex.MMD1000_CMD_LENGTH_ERROR:
+                    msg = "Length error in command communication";
+                    break;
+                case MsrIndex.MMD1000_READ_NO_DATA:
+                    msg = "No data available to re-read";
+                    break;
+                case MsrIndex.MMD1000_DEVICE_READ_TIMEOUT:
+                    msg = "Read command timeout";
+                    break;
+                case MsrIndex.MMD1000_DEVICE_POWER_DISABLE:
+                    msg = "MMD1000 power is disable";
+                    break;
+                case MsrIndex.MMD1000_DEVICE_NOT_OPENED:
+                    msg = "MMD1000 function is not opened";
+                    break;
+                case MsrIndex.MMD1000_DEVICE_DATA_CLEARED:
+                    msg = "MMD1000 device result is cleared";
+                    break;
+                default:
+                    msg = "error";
+                    break;
             }
         }
-
         return msg;
     }
 
