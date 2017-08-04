@@ -363,7 +363,7 @@ public class PM80 extends CordovaPlugin {
                 case MsrIndex.MMD1000_AES_INIT_NOT_SET:
                     msg = "AES initial vector is not set yet";
                     break;
-                case MsrIndex.MMD1000_READ_PREAMBLE_ERROR
+                case MsrIndex.MMD1000_READ_PREAMBLE_ERROR:
                     msg = "Preamble error in card read data";
                     break;
                 case MsrIndex.MMD1000_READ_POSTAMBLE_ERROR:
