@@ -406,7 +406,7 @@ public class PM80 extends CordovaPlugin {
                     msg = "MMD1000 device result is cleared";
                     break;
                 default:
-                    msg = "error";
+                    msg = "Error: " + status;
                     break;
             }
         }

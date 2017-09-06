@@ -26,6 +26,24 @@
         <param name="android-package" value="nl.timeseries.plugin.pm80.PM80"/>
       </feature>
     </config-file>
+    <config-file target="AndroidManifest.xml" parent="/manifest/application">
+      <uses-permission android:name="device.sdk.sample.scanner.permission.SCANNER_RESULT_RECEIVER"/>
+      <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
+      <permission
+          android:name="device.sdk.sample.scanner.permission.SCANNER_RESULT_RECEIVER"
+          android:protectionLevel="normal" />
+    </config-file>
+    <receiver
+        android:name="nl.timeseries.plugin.pm80.PM80$ScanResultReceiver"
+        android:enabled="true"
+        android:permission="device.sdk.sample.scanner.permission.SCANNER_RESULT_RECEIVER"
+        android:priority="0" >
+      <intent-filter>
+        <action android:name="device.common.USERMSG" />
+      </intent-filter>
+    </receiver>
+
+    <uses-library android:name="device.sdk" android:required="true" />
     <source-file src="src/android/device.sdk.jar" target-dir="libs" framework="true" />
     <source-file src="src/android/PM80.java" target-dir="src/nl/timeseries/plugin/PM80/"/>
     <source-file src="src/android/Dukpt.java" target-dir="src/nl/timeseries/plugin/PM80/"/>
