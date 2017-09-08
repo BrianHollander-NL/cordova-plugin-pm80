@@ -354,6 +354,9 @@ public class PM80 extends CordovaPlugin {
                 case MsrIndex.MMD1000_READ_ERROR:
                     msg = "Read failed";
                     break;
+                case MsrIndex.MMD1000_READ_STOP:
+                    msg = "Read stop";
+                    break;
                 case MsrIndex.MMD1000_CRC_ERROR:
                     msg = "CRC error in encryption related information stored in OTP";
                     break;
@@ -410,7 +413,7 @@ public class PM80 extends CordovaPlugin {
                     break;
             }
         }
-        return msg;
+        return status + " - " + msg;
     }
 
 
