@@ -79,7 +79,7 @@ public class PM80 extends CordovaPlugin {
         super.onPause(multitasking);
 
         if (readerActivated) {
-            deactivateReader(null);
+            //deactivateReader(null);
         }
         if (scannerActivated) {
             deactivateScanner(null);
@@ -98,7 +98,7 @@ public class PM80 extends CordovaPlugin {
         super.onResume(multitasking);
 
         if (readerActivated) {
-            activateReader(null);
+            //activateReader(null);
         }
         if (scannerActivated) {
             activateScanner(null);
@@ -354,9 +354,6 @@ public class PM80 extends CordovaPlugin {
                 case MsrIndex.MMD1000_READ_ERROR:
                     msg = "Read failed";
                     break;
-                case MsrIndex.MMD1000_READ_STOP:
-                    msg = "Read stop";
-                    break;
                 case MsrIndex.MMD1000_CRC_ERROR:
                     msg = "CRC error in encryption related information stored in OTP";
                     break;
@@ -413,7 +410,7 @@ public class PM80 extends CordovaPlugin {
                     break;
             }
         }
-        return status + " - " + msg;
+        return msg;
     }
 
 
