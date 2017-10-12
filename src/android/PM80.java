@@ -75,7 +75,7 @@ public class PM80 extends CordovaPlugin {
      *      Flag indicating if multitasking is turned on for app
      */
     @Override
-    public void onPause() {
+    public void onPause(boolean multitasking) {
         super.onPause();
 
         if (readerActivated) {
@@ -94,7 +94,7 @@ public class PM80 extends CordovaPlugin {
      *      Flag indicating if multitasking is turned on for app
      */
     @Override
-    public void onResume() {
+    public void onResume(boolean multitasking) {
         super.onResume();
 
         if (readerActivated) {
