@@ -30,7 +30,7 @@ import device.common.DecodeResult;
 import device.common.ScanConst;
 
 public class PM80 extends CordovaPlugin {
-    private static final String TAG="MSR";
+    
     // Reference to application context for construction and resource purposes
     private Context context;
     /* read state */
