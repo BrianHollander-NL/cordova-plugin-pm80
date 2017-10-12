@@ -77,13 +77,14 @@ public class PM80 extends CordovaPlugin {
     @Override
     public void onPause(boolean multitasking) {
         super.onPause(multitasking);
-/*
+
         if (readerActivated) {
-            //deactivateReader(null);
+            stopSwipe(null);
+            deactivateReader(null);
         }
         if (scannerActivated) {
             deactivateScanner(null);
-        }*/
+        }
     }
 
     /**
@@ -96,13 +97,14 @@ public class PM80 extends CordovaPlugin {
     @Override
     public void onResume(boolean multitasking) {
         super.onResume(multitasking);
-/*
+
         if (readerActivated) {
-            //activateReader(null);
+            activateReader(null);
+            swipe(null);
         }
         if (scannerActivated) {
             activateScanner(null);
-        }*/
+        }
     }
 
     /***************************************************
@@ -200,13 +202,15 @@ public class PM80 extends CordovaPlugin {
                 // processing and card data received if a card is
                 // actually swiped, otherwise we can expect a timeout
                 // event.
-                callbackContext.success();
+                if( callbackContext != null) callbackContext.success();
             } else {
                 // Unexpected error
-                callbackContext.error("Failed to start swipe.");
+                if( callbackContext != null) callbackContext.error("Failed to start swipe.");
             }
 
-        } else callbackContext.error("Reader must be activated before starting swipe.");
+        } else {
+            if( callbackContext != null) callbackContext.error("Reader must be activated before starting swipe.");
+        }
     }
     /**
      * Tells the SDK to stop expecting a swipe.
@@ -217,7 +221,9 @@ public class PM80 extends CordovaPlugin {
     private void stopSwipe(final CallbackContext callbackContext) {
         if(mMsr != null) {
             mMsr.DeviceMsrStopRead();
-        } else callbackContext.error("Reader must be activated before stopping swipe.");
+        } else {
+            if( callbackContext != null) callbackContext.error("Reader must be activated before stopping swipe.");
+        }
     }
 
     /**
