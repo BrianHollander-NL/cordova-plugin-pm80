@@ -52,7 +52,7 @@ public class PM80 extends CordovaPlugin {
     private String mResult = null;
 
     private boolean readerActivated = false;
-    private boolean scannerActivated = true;
+    private boolean scannerActivated = false;
 
     /***************************************************
      * LIFECYCLE
@@ -79,7 +79,6 @@ public class PM80 extends CordovaPlugin {
         super.onPause(multitasking);
 
         if (readerActivated) {
-            stopSwipe(null);
             deactivateReader(null);
         }
         if (scannerActivated) {
