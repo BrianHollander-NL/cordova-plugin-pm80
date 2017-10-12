@@ -76,14 +76,14 @@ public class PM80 extends CordovaPlugin {
      */
     @Override
     public void onPause(boolean multitasking) {
-        super.onPause();
-
+        super.onPause(multitasking);
+/*
         if (readerActivated) {
             //deactivateReader(null);
         }
         if (scannerActivated) {
             deactivateScanner(null);
-        }
+        }*/
     }
 
     /**
@@ -95,14 +95,14 @@ public class PM80 extends CordovaPlugin {
      */
     @Override
     public void onResume(boolean multitasking) {
-        super.onResume();
-
+        super.onResume(multitasking);
+/*
         if (readerActivated) {
             //activateReader(null);
         }
         if (scannerActivated) {
             activateScanner(null);
-        }
+        }*/
     }
 
     /***************************************************
