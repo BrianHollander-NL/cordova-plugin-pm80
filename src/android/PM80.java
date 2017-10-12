@@ -100,7 +100,6 @@ public class PM80 extends CordovaPlugin {
 
         if (readerActivated) {
             activateReader(null);
-            swipe(null);
         }
         if (scannerActivated) {
             activateScanner(null);
