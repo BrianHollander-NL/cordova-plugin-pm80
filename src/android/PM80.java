@@ -158,9 +158,6 @@ public class PM80 extends CordovaPlugin {
             if(mMsr != null){
                 mMsr.DeviceMsrOpen(mCallback);
             }
-            mTrack1 = new String();
-            mTrack2 = new String();
-            mTrack3 = new String();
 
             if(callbackContext != null){
                 readerActivated = true;
