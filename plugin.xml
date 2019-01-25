@@ -27,16 +27,16 @@
       </feature>
     </config-file>
     <config-file target="AndroidManifest.xml" parent="/*">
-      <uses-permission android:name="device.sdk.sample.scanner.permission.SCANNER_RESULT_RECEIVER"/>
+      <uses-permission android:name="nl.timeseries.plugin.pm80.permission.SCANNER_RESULT_RECEIVER"/>
       <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
       <permission
-          android:name="device.sdk.sample.scanner.permission.SCANNER_RESULT_RECEIVER"
+          android:name="nl.timeseries.plugin.pm80.permission.SCANNER_RESULT_RECEIVER"
           android:protectionLevel="normal" />
     </config-file>
     <receiver
         android:name="nl.timeseries.plugin.pm80.PM80$ScanResultReceiver"
         android:enabled="true"
-        android:permission="device.sdk.sample.scanner.permission.SCANNER_RESULT_RECEIVER"
+        android:permission="nl.timeseries.plugin.pm80.permission.SCANNER_RESULT_RECEIVER"
         android:priority="0" >
       <intent-filter>
         <action android:name="device.common.USERMSG" />
