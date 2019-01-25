@@ -31,7 +31,6 @@ import device.common.DecodeResult;
 import device.common.ScanConst;
 
 public class PM80 extends CordovaPlugin {
-    
     // Reference to application context for construction and resource purposes
     private Context context;
     /* read state */
@@ -47,14 +46,14 @@ public class PM80 extends CordovaPlugin {
     private final ScanResultReceiver scanResultReceiver = new ScanResultReceiver();
     private int origScanResultType = 0;
 
+    private String mResult = null;
+
     private String mTrack1;
     private String mTrack2;
     private String mTrack3;
 
-    private String mResult = null;
-
     private boolean readerActivated = false;
-    private boolean scannerActivated = false;
+    private boolean scannerActivated = true;
 
     /***************************************************
      * LIFECYCLE
@@ -66,7 +65,6 @@ public class PM80 extends CordovaPlugin {
     @Override
     public void initialize(CordovaInterface cordova,CordovaWebView webView){
         super.initialize(cordova,webView);
-        mDetectResult = new MsrResult();
     }
 
     /**
@@ -137,6 +135,8 @@ public class PM80 extends CordovaPlugin {
             activateScanner(callbackContext);
         } else if("SCAN_deactivateScanner".equals(action)){
             deactivateScanner(callbackContext);
+        } else if("getDeviceInformation".equals(action)){
+            getDeviceInformation(callbackContext);
         } else {
             // Method not found.
             return false;
@@ -173,20 +173,17 @@ public class PM80 extends CordovaPlugin {
         }
         sendCallback(callbackContext,callbackContextMsg);
     }
-
     private void deactivateReader(final CallbackContext callbackContext){
         try{
-            mMsr.DeviceMsrClose();
-            mMsr = null;
-            if(callbackContext != null){
-                readerActivated = false;
-            }
+
         } catch(IllegalArgumentException e){
             e.printStackTrace();
         }
 
         sendCallback(callbackContext,null);
     }
+
+
     /**
      * Tells the SDK to begin expecting a swipe. From the moment this is
      * called, the user will have 30 seconds to swipe the card before a
@@ -202,15 +199,13 @@ public class PM80 extends CordovaPlugin {
                 // processing and card data received if a card is
                 // actually swiped, otherwise we can expect a timeout
                 // event.
-                if( callbackContext != null) callbackContext.success();
+                callbackContext.success();
             } else {
                 // Unexpected error
-                if( callbackContext != null) callbackContext.error("Failed to start swipe.");
+                callbackContext.error("Failed to start swipe.");
             }
 
-        } else {
-            if( callbackContext != null) callbackContext.error("Reader must be activated before starting swipe.");
-        }
+        } else callbackContext.error("Reader must be activated before starting swipe.");
     }
     /**
      * Tells the SDK to stop expecting a swipe.
@@ -221,11 +216,8 @@ public class PM80 extends CordovaPlugin {
     private void stopSwipe(final CallbackContext callbackContext) {
         if(mMsr != null) {
             mMsr.DeviceMsrStopRead();
-        } else {
-            if( callbackContext != null) callbackContext.error("Reader must be activated before stopping swipe.");
-        }
+        } else callbackContext.error("Reader must be activated before stopping swipe.");
     }
-
     /**
      * @param callbackContext
      *        Used when calling back into JavaScript
@@ -294,7 +286,7 @@ public class PM80 extends CordovaPlugin {
             message += ",\"serialNumber\": \"" + mInformation.getSerialNumber() + "\"";
             message += ",\"partNumber\": \"" + mInformation.getPartNumber() + "\"";
             message += ",\"manufacturerDate\": \"" + mInformation.getManufactureDate() + "\"";
-            message += ",\"sdkVersion\": \"2\"}";
+            message += ",\"sdkVersion\": \"" + mInformation.getSDKVersion() + "\"}";
             callbackContext.success(message);
 
         } catch(Exception e){
@@ -353,6 +345,24 @@ public class PM80 extends CordovaPlugin {
         }
     }
 
+    /**
+     * Perform either a success or error callback on given CallbackContext
+     * depending on state of msg.
+     * @param callbackContext
+     *        Used when calling back into JavaScript
+     * @param msg
+     *        Error message, or null if success
+     */
+
+    private void sendCallback(CallbackContext callbackContext, String msg) {
+        // callbackContext will only be null when caller called from
+        // lifecycle methods (i.e., never from containing app).
+        if (callbackContext != null) {
+            if (msg == null) {
+                callbackContext.success();
+            } else callbackContext.error(msg);
+        }
+    }
     /***************************************************
      * UTILS
      ***************************************************/
@@ -380,7 +390,7 @@ public class PM80 extends CordovaPlugin {
             }
         }
         else {
-            switch (status) {
+            switch(status) {
                 case MsrIndex.MMD1000_READ_ERROR:
                     msg = "Read failed";
                     break;
@@ -446,12 +456,6 @@ public class PM80 extends CordovaPlugin {
         return status + " - " + msg;
     }
 
-
-    public boolean setUsedEncryption() {
-        byte[] keySerialNumber = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x00, 0x00, 0x00};
-        byte[] initialKey = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10};
-        return mMsr.setUsedEncryption(keySerialNumber, initialKey);
-    }
     public byte[] getEncryptionData() {
         return mMsr.getEncryptionData();
     }
@@ -516,25 +520,6 @@ public class PM80 extends CordovaPlugin {
         }
     }
     /**
-     * Perform either a success or error callback on given CallbackContext
-     * depending on state of msg.
-     * @param callbackContext
-     *        Used when calling back into JavaScript
-     * @param msg
-     *        Error message, or null if success
-     */
-
-    private void sendCallback(CallbackContext callbackContext, String msg) {
-        // callbackContext will only be null when caller called from
-        // lifecycle methods (i.e., never from containing app).
-        if (callbackContext != null) {
-            if (msg == null) {
-                callbackContext.success();
-            } else callbackContext.error(msg);
-        }
-    }
-
-    /**
      * Pass event to method overload.
      *
      * @param event
@@ -558,7 +543,7 @@ public class PM80 extends CordovaPlugin {
         }
         String dataArg = data != null ? "','" + data + "" : "";
 
-        String js = "cordova.plugins.PM80.fireEvent('" +
+        String js = "cordova.plugins.PointMobile.fireEvent('" +
                 event + dataArg + "');";
 
         webView.sendJavascript(js);

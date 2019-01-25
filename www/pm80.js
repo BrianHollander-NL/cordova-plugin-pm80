@@ -2,7 +2,7 @@ var exec = require('cordova/exec');
 
 var PM80 = function() {};
 PM80.getDeviceInformation = function(success, error) {
-	exec(success, error, 'PointMobile', 'getDeviceInformation', []);
+	exec(success, error, 'PM80', 'getDeviceInformation', []);
 };
 PM80.activate = function(success, error) {
 	exec(success, error, 'PM80', 'MSR_activateReader', []);
