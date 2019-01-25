@@ -25,7 +25,6 @@ import device.common.MsrIndex;
 import device.common.MsrResult;
 import device.common.MsrResultCallback;
 import device.sdk.Information;
-import device.sdk.MsrManager;
 import device.sdk.ScanManager;
 import device.common.DecodeResult;
 import device.common.ScanConst;
