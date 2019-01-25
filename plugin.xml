@@ -26,7 +26,7 @@
         <param name="android-package" value="nl.timeseries.plugin.pm80.PM80"/>
       </feature>
     </config-file>
-    <config-file target="AndroidManifest.xml" parent="/manifest/application">
+    <config-file target="AndroidManifest.xml" parent="/*">
       <uses-permission android:name="device.sdk.sample.scanner.permission.SCANNER_RESULT_RECEIVER"/>
       <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
       <permission
