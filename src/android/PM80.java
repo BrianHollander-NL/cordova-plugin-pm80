@@ -294,7 +294,7 @@ public class PM80 extends CordovaPlugin {
             message += ",\"serialNumber\": \"" + mInformation.getSerialNumber() + "\"";
             message += ",\"partNumber\": \"" + mInformation.getPartNumber() + "\"";
             message += ",\"manufacturerDate\": \"" + mInformation.getManufactureDate() + "\"";
-            message += ",\"sdkVersion\": \"" + mInformation.getSDKVersion() + "\"}";
+            message += ",\"sdkVersion\": \"2\"}";
             callbackContext.success(message);
 
         } catch(Exception e){
