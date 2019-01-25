@@ -24,6 +24,7 @@ import android.content.IntentFilter;
 import device.common.MsrIndex;
 import device.common.MsrResult;
 import device.common.MsrResultCallback;
+import device.sdk.Information;
 import device.sdk.MsrManager;
 import device.sdk.ScanManager;
 import device.common.DecodeResult;
@@ -38,6 +39,7 @@ public class PM80 extends CordovaPlugin {
     public static final int READ_FAIL=1;
     public static final int READ_READY=2;
 
+    private Information mInformation;
     private static MsrManager mMsr = null;
     private MsrResult mDetectResult = null;
     private static ScanManager mScan = null;
@@ -275,6 +277,30 @@ public class PM80 extends CordovaPlugin {
         }
 
         sendCallback(callbackContext,null);
+    }
+    private void getDeviceInformation(final CallbackContext callbackContext){
+
+        try{
+            mInformation = new Information();
+            String message;
+            message = "{";
+            message += "\"hardwareRevision\": \"" + mInformation.getHardwareRevision() + "\"";
+            message += ",\"androidVersion\": \"" + mInformation.getAndroidVersion() + "\"";
+            message += ",\"kernelVersion\": \"" + mInformation.getKernelVersion() + "\"";
+            message += ",\"buildNumber\": \"" + mInformation.getBuildNumber() + "\"";
+            message += ",\"manufacturer\": \"" + mInformation.getManufacturer() + "\"";
+            message += ",\"modelName\": \"" + mInformation.getModelName() + "\"";
+            message += ",\"processorInfo\": \"" + mInformation.getProcessorInfo() + "\"";
+            message += ",\"serialNumber\": \"" + mInformation.getSerialNumber() + "\"";
+            message += ",\"partNumber\": \"" + mInformation.getPartNumber() + "\"";
+            message += ",\"manufacturerDate\": \"" + mInformation.getManufactureDate() + "\"";
+            message += ",\"sdkVersion\": \"" + mInformation.getSDKVersion() + "\"}";
+            callbackContext.success(message);
+
+        } catch(Exception e){
+            callbackContext.error("Not possible to get device information");
+        }
+
     }
     /***************************************************
      * SDK CALLBACKS
