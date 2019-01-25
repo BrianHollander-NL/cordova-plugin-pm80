@@ -30,7 +30,7 @@ import device.common.DecodeResult;
 import device.common.ScanConst;
 
 public class PM80 extends CordovaPlugin {
-    private static final String TAG="MSR";
+    
     // Reference to application context for construction and resource purposes
     private Context context;
     /* read state */
@@ -52,7 +52,7 @@ public class PM80 extends CordovaPlugin {
     private String mResult = null;
 
     private boolean readerActivated = false;
-    private boolean scannerActivated = true;
+    private boolean scannerActivated = false;
 
     /***************************************************
      * LIFECYCLE
@@ -200,13 +200,15 @@ public class PM80 extends CordovaPlugin {
                 // processing and card data received if a card is
                 // actually swiped, otherwise we can expect a timeout
                 // event.
-                callbackContext.success();
+                if( callbackContext != null) callbackContext.success();
             } else {
                 // Unexpected error
-                callbackContext.error("Failed to start swipe.");
+                if( callbackContext != null) callbackContext.error("Failed to start swipe.");
             }
 
-        } else callbackContext.error("Reader must be activated before starting swipe.");
+        } else {
+            if( callbackContext != null) callbackContext.error("Reader must be activated before starting swipe.");
+        }
     }
     /**
      * Tells the SDK to stop expecting a swipe.
@@ -217,7 +219,9 @@ public class PM80 extends CordovaPlugin {
     private void stopSwipe(final CallbackContext callbackContext) {
         if(mMsr != null) {
             mMsr.DeviceMsrStopRead();
-        } else callbackContext.error("Reader must be activated before stopping swipe.");
+        } else {
+            if( callbackContext != null) callbackContext.error("Reader must be activated before stopping swipe.");
+        }
     }
 
     /**
@@ -350,7 +354,7 @@ public class PM80 extends CordovaPlugin {
             }
         }
         else {
-            switch(status) {
+            switch (status) {
                 case MsrIndex.MMD1000_READ_ERROR:
                     msg = "Read failed";
                     break;
