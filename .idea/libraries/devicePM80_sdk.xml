@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="devicePM80.sdk">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/src/android/devicePM80.sdk.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
